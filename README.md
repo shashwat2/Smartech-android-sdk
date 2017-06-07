@@ -56,7 +56,7 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
 ```
 4. Add Netcore SDK (i.e. aar file) in libs folder
 
-5. Follow below instruction for modification of build.gradle:
+### Follow below instruction for modification of build.gradle:
   Add in repositories below code:
  
     flatDir { dirs 'libs' } 
@@ -135,10 +135,10 @@ NetcoreSDK. logout ( this , identity , tx , sessionId , NetcorePrefs. LOGOUT , p
 // Note: payload is optional. Put blank(i.e “”) if not passing anything
 ```
 
-5. **Event Activity**
+### Event Activity Tracking For Every Activity
 ```java
 
-//Event Activity
+//Add this line for every Activity which is going to Track
 NetcoreSDK. registerAppEvent ( this , EventId, sessionId , CurrentTime in msecond , identity ,Payload , config );
 
 // Note: payload is optional. Put blank(i.e “”) if not passing anything EventId pass by NetcorePrefs.<Event Name which provided by Us> 
