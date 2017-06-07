@@ -19,18 +19,15 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
 ### Changes in AndroidManifest File
 1. Add GCM permissions in the androidmanifest.xml:
 ```xml
-<uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.WAKE_LOCK" />
-<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.VIBRATE" />
-<permission android:name="<package name>.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-<uses-permission android:name="<package name>.permission.C2D_MESSAGE" />
-```
+        <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+        <uses-permission android:name="android.permission.INTERNET" />-->
+        <uses-permission android:name="android.permission.WAKE_LOCK" />
+        <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
+        <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
+        <permission android:name="<package name>.permission.C2D_MESSAGE" android:protectionLevel="signature" />```
 
 2. To Add Below code in application tag for Application Id:
 ```xml
@@ -60,8 +57,7 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
 4. Add Netcore SDK (i.e. aar file) in libs folder
 
 5. Follow below instruction for modification of build.gradle:
- 
-Add in repositories below code:
+  Add in repositories below code:
  
     flatDir { dirs 'libs' } 
  
@@ -74,7 +70,7 @@ Add in repositories below code:
     compile "com.google.android.gms:play-services:7.5.+"
 
 
-### SDK Method inside your app
+### SDK Method inside your Application
 1. Initialize of Smartech SDK Configuration in Launcher Activity
 ```java
 //Add import files in Launcher page
@@ -150,7 +146,7 @@ NetcoreSDK. registerAppEvent ( this , EventId, sessionId , CurrentTime in msecon
 
 
 ```
-6. **InApp Engage**
+### Changes for InApp Engage
 ```java
 
 //Add Below Code in OnCreate method of Launcher Activity
