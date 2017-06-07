@@ -8,21 +8,16 @@ The Netcore Android SDK for App Engagement
 
 ## Getting Started
 
-1. Sign Up
-
-    Signup to Netcore Smartech account.
-
-2.  Install the SDK
-
-## Android Studio / Gradle     
-
-### Changes in /libs folder        
-    Copy the '.aar' file in the /libs directory of your project and also add it as a dependency.
+Before performing Application Changes, Follow these two steps:-
+ 
+Step 1: Get GCM sender Id and Api Key from Google Developer console
+ 
+Step 2: Get App Id and Smartech SDK from Smartech Panel
 
 Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The minimum Android SDK level supported is 9 (2.3)
 
 ### Changes in AndroidManifest File
-1. Add GCM permissions in the androidmanifest.xml . The Application id is the package id of your application.
+1. Add GCM permissions in the androidmanifest.xml:
 ```xml
 <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -37,7 +32,14 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
 <uses-permission android:name="<package name>.permission.C2D_MESSAGE" />
 ```
 
-2. To allow the receiver to receive notifications, Add Below code paste in application tag:
+2. To Add Below code in application tag for Application Id:
+```xml
+<meta-data
+   android:name="com.netcore.sdk.ApplicationId"
+   android:value="<AppId>"/>
+```
+
+3. To allow the receiver to receive notifications, Add Below code paste in application tag:
 ```xml
 <meta-data
    android:name="com.netcore.sdk.ApplicationId"
@@ -55,23 +57,25 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
 </receiver>
 <!-- GCM -->
 ```
-3. Follow below instruction for modification of build.gradle:
+4. Add Netcore SDK (i.e. aar file) in libs folder
+
+5. Follow below instruction for modification of build.gradle:
  
 Add in repositories below code:
  
-flatDir { dirs 'libs' } 
+    flatDir { dirs 'libs' } 
  
-Add in dependencies below code:
+    Add in dependencies below code:
  
-compile(name:'<sdk name>', ext:'aar') 
+    compile(name:'<sdk name>', ext:'aar') 
  
-Add in dependencies for Google play services of GMS:
+    Add in dependencies for Google play services of GMS:
  
-compile "com.google.android.gms:play-services:7.5.+"
+    compile "com.google.android.gms:play-services:7.5.+"
 
 
 ### SDK Method inside your app
-1. Initialize Smartech SDK Configuration
+1. Initialize of Smartech SDK Configuration in Launcher Activity
 ```java
 //Add import files in Launcher page
  
@@ -81,10 +85,9 @@ import com.netcore.lib.NetcorePush;
 import com.netcore.lib.NetcoreSDK;
  
 
-Obtain the sender ID from Google, and the application ID from Smartech.
 // GCM
 NetcoreSDK.Config config = new NetcoreSDK.Config()
-.setSenderId("<xxxxxxxxxx>"); // Recieved from GCM
+.setSenderId("<sender Id>"); // Recieved from GCM
 
 // Only for notification popup UI
 config.setActivityClass(com.netcore.testapp1.MyActivity. class ).
@@ -102,8 +105,8 @@ config.setNetcorePush( new NetcorePush() {
 ```
     
 2. **Registration**
-To register your app on netCORE’s server, add the following <>
 ```java
+//To register your app on netCORE’s server, add the following code in Launcher Activity:
 // Current context
 // Netcore.SDK.Config object instance.
 // Note :- Call this on your landing screen to keep gcm tokens updated
