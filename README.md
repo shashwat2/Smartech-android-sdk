@@ -21,7 +21,7 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
 ```xml
         <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
         <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-        <uses-permission android:name="android.permission.INTERNET" />-->
+        <uses-permission android:name="android.permission.INTERNET" />
         <uses-permission android:name="android.permission.WAKE_LOCK" />
         <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -38,9 +38,6 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
 
 3. To allow the receiver to receive notifications, Add Below code paste in application tag:
 ```xml
-<meta-data
-   android:name="com.netcore.sdk.ApplicationId"
-   android:value="<AppId>"/>
 <!-- GCM TO BE ADDED By CUSTOMER IN MANIFEST -->
 <receiver
    android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -63,7 +60,7 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
  
     Add in dependencies below code:
  
-    compile(name:'<sdk name>', ext:'aar') 
+    compile(name:'SmartechSDK', ext:'aar') 
  
     Add in dependencies for Google play services of GMS:
  
