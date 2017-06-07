@@ -140,6 +140,14 @@ NetcoreSDK. registerAppEvent ( this , EventId, sessionId , CurrentTime in msecon
 // Note: payload is optional. Put blank(i.e “”) if not passing anything EventId pass by NetcorePrefs.<Event Name which provided by Us> 
 // Ex. NetcorePrefs.ADD_TO_CART, NetcorePrefs.REMOVE_FROM_CART
 
+
+```
+6. **InApp Engage**
+```java
+
+//Add Below Code in OnCreate method of Launcher Activity
+ActivityLifeCycleCallBack.register(getApplication());
+
 ```
 
 ### To support deeplink in application
@@ -156,6 +164,7 @@ Ex.
 <action android:name= "android.intent.action.VIEW" />
 <category android:name= "android.intent.category.DEFAULT" />
 <category android:name= "android.intent.category.BROWSABLE" />
-<data android
+<data android:scheme = "smartech" android :host= "products" />
+</intent-filter>
 ```
 
