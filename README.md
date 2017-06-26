@@ -17,7 +17,7 @@ Step 2: Get App Id and Smartech SDK from Smartech Panel
 Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The minimum Android SDK level supported is 9 (2.3)
 
 ### Changes in AndroidManifest File
-1. Add GCM permissions in the androidmanifest.xml:
+1. Add Below code above or below application tag in the androidmanifest.xml:
 ```xml
         <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
         <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -27,16 +27,17 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
         <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
         <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
-        <permission android:name="<package name>.permission.C2D_MESSAGE" android:protectionLevel="signature" />```
+        <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+        <permission android:name="<package name>.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+        ```
 
-2. To Add Below code in application tag for Application Id:
+2. Add Below code in application tag for Application Id:
 ```xml
 <meta-data
    android:name="com.netcore.sdk.ApplicationId"
    android:value="<AppId>"/>
 ```
-
-3. To allow the receiver to receive notifications, Add Below code paste in application tag:
+3. To allow the receiver to receive notifications, Add Below code in application tag:
 ```xml
 <!-- GCM TO BE ADDED By CUSTOMER IN MANIFEST -->
 <receiver
@@ -54,15 +55,15 @@ Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The min
 4. Add Netcore SDK (i.e. aar file) in libs folder
 
 ### Follow below instruction for modification of build.gradle:
-  Add in repositories below code:
+    Add in parent repositories (not in child repositories. If not present then create new repositories) below code:
  
     flatDir { dirs 'libs' } 
  
-    Add in dependencies below code:
+    Add in parent dependencies (not in child dependencies. If not present then create new dependencies) below code:
  
     compile(name:'SmartechSDK', ext:'aar') 
  
-    Add in dependencies for Google play services of GMS:
+    Add in parent dependencies (not in child dependencies. If not present then create new dependencies) for Google play services of GMS:
  
     compile "com.google.android.gms:play-services:7.5.+"
 
@@ -78,13 +79,18 @@ import com.netcore.lib.NetcorePush;
 import com.netcore.lib.NetcoreSDK;
  
 
-// GCM
-NetcoreSDK.Config config = new NetcoreSDK.Config()
-.setSenderId("<sender Id>"); // Recieved from GCM
+// Define Variables as
+  NetcoreSDK.Config config;
+  public long sessionId;
+ 
+ //Paste below code in onCreate method:
+  sessionId = System.currentTimeMillis();
+  config = new NetcoreSDK.Config()
+  .setSenderId("<sender Id>");
 
-// Only for notification popup UI
-config.setActivityClass(com.netcore.testapp1.MyActivity. class ).
-setSmallIcon(R.mipmap.ic_launcher);
+// Only for notification popup UI 
+config.setActivityClass( MainActivity.class ).
+       setSmallIcon( R.drawable.ic_launcher ); //change as per your available icon in drawable
 
 // Activity to be launched when user clicks on notification & Custom notification icon to be shown
 // Only for data callbacks on payload
@@ -92,7 +98,7 @@ setSmallIcon(R.mipmap.ic_launcher);
 config.setNetcorePush( new NetcorePush() {
     @Override
     public void onDataReceived(String json) {
-        Log.d(TAG,"Recieved " + json);
+    NetcoreSDK.registerAppEvent( MainActivity.this, NetcorePrefs.PUSH_DELIVERED, System.currentTimeMillis(), sessionId, identity, "", config );
     }
 });
 ```
@@ -104,8 +110,8 @@ config.setNetcorePush( new NetcorePush() {
 // Netcore.SDK.Config object instance.
 // Note :- Call this on your landing screen to keep gcm tokens updated
 try {
-    NetcoreSDK. register ( this , config , currentTime in msecond , sessionId , identity ,
-    NetcorePrefs. SIGNUP_REGISTER );
+    NetcoreSDK. register ( this , config , System.currentTimeMillis(), sessionId , identity ,
+    NetcorePrefs.SIGNUP_REGISTER );
 } catch (NetcoreSDK.MissingPermissionException e) {
     e.printStackTrace();
 }
@@ -118,7 +124,7 @@ try {
 //-userid / username/email that was used to login in your app
 // Note :- To be used once you have registered on your app server and obtained primary id, you can then pass this ID as userId for identification purpose, this will help to forward notification to targeted user.
 
-NetcoreSDK.login( this , UserName , CurrentTime in msecond , SesionId , NetcorePrefs.LOGIN,payload , config );
+NetcoreSDK.login( this , UserName , System.currentTimeMillis(), sesionId , NetcorePrefs.LOGIN, payload , config );
 
 //Note: payload is optional. Put blank(i.e “”) if not passing anything
 ```
@@ -127,7 +133,7 @@ NetcoreSDK.login( this , UserName , CurrentTime in msecond , SesionId , NetcoreP
 ```java
 
 NetcoreSDK.logout(this);
-NetcoreSDK. logout ( this , identity , tx , sessionId , NetcorePrefs. LOGOUT , payload , config );
+NetcoreSDK.logout ( this , identity , System.currentTimeMillis(), sessionId , NetcorePrefs.LOGOUT , payload , config );
 
 // Note: payload is optional. Put blank(i.e “”) if not passing anything
 ```
@@ -136,7 +142,7 @@ NetcoreSDK. logout ( this , identity , tx , sessionId , NetcorePrefs. LOGOUT , p
 ```java
 
 //Add this line for every Activity which is going to Track
-NetcoreSDK. registerAppEvent ( this , EventId, sessionId , CurrentTime in msecond , identity ,Payload , config );
+NetcoreSDK.registerAppEvent ( this , EventId, sessionId , System.currentTimeMillis(), identity ,Payload , config );
 
 // Note: payload is optional. Put blank(i.e “”) if not passing anything EventId pass by NetcorePrefs.<Event Name which provided by Us> 
 // Ex. NetcorePrefs.ADD_TO_CART, NetcorePrefs.REMOVE_FROM_CART
@@ -154,18 +160,18 @@ ActivityLifeCycleCallBack.register(getApplication());
 ### To support deeplink in application
 Add these peice of code in AndroidManifest.xml file in each activity in which you want Deep-Link.
 ```xml
-<intent-filter>
-<action android:name = "android.intent.action.VIEW" />
-<category android:name = "android.intent.category.DEFAULT" />
-<category android:name = "android.intent.category.BROWSABLE" />
-<data android:scheme = "<scheme name>" android :host= "<hostname>" />
-</intent-filter>
+    <intent-filter>
+    <action android:name = "android.intent.action.VIEW" />
+    <category android:name = "android.intent.category.DEFAULT" />
+    <category android:name = "android.intent.category.BROWSABLE" />
+    <data android:scheme = "<scheme name>" android :host= "<hostname>" />
+    </intent-filter>
 Ex.
-<intent-filter>
-<action android:name= "android.intent.action.VIEW" />
-<category android:name= "android.intent.category.DEFAULT" />
-<category android:name= "android.intent.category.BROWSABLE" />
-<data android:scheme = "smartech" android :host= "products" />
-</intent-filter>
+    <intent-filter>
+    <action android:name= "android.intent.action.VIEW" />
+    <category android:name= "android.intent.category.DEFAULT" />
+    <category android:name= "android.intent.category.BROWSABLE" />
+    <data android:scheme = "smartech" android :host= "products" />
+    </intent-filter>
 ```
 
