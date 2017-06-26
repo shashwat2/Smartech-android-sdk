@@ -14,7 +14,7 @@ Step 1: Get GCM sender Id and Api Key from Google Developer console
  
 Step 2: Get App Id and Smartech SDK from Smartech Panel
 
-Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The minimum Android SDK level supported is 9 (2.3)
+Note: The SDK depends on Android v4 support library, minimum rev 23.1.1. The minimum Android SDK level supported is 14 (4.0)
 
 ### Changes in AndroidManifest File
 1. Add Below code above or below application tag in the androidmanifest.xml:
@@ -132,8 +132,7 @@ NetcoreSDK.login( this , UserName , System.currentTimeMillis(), sesionId , Netco
 4. **Logout**
 ```java
 
-NetcoreSDK.logout(this);
-NetcoreSDK.logout ( this , identity , System.currentTimeMillis(), sessionId , NetcorePrefs.LOGOUT , payload , config );
+NetcoreSDK.logout( this, identity, System.currentTimeMillis(), sessionId, NetcorePrefs.LOGOUT, payload, config );
 
 // Note: payload is optional. Put blank(i.e “”) if not passing anything
 ```
@@ -142,7 +141,7 @@ NetcoreSDK.logout ( this , identity , System.currentTimeMillis(), sessionId , Ne
 ```java
 
 //Add this line for every Activity which is going to Track
-NetcoreSDK.registerAppEvent ( this , EventId, sessionId , System.currentTimeMillis(), identity ,Payload , config );
+NetcoreSDK.registerAppEvent( this, EventId, sessionId, System.currentTimeMillis(), identity, Payload, config );
 
 // Note: payload is optional. Put blank(i.e “”) if not passing anything EventId pass by NetcorePrefs.<Event Name which provided by Us> 
 // Ex. NetcorePrefs.ADD_TO_CART, NetcorePrefs.REMOVE_FROM_CART
@@ -156,6 +155,39 @@ NetcoreSDK.registerAppEvent ( this , EventId, sessionId , System.currentTimeMill
 ActivityLifeCycleCallBack.register(getApplication());
 
 ```
+### For Profile Update
+```java
+
+//Add below code in activity where you passing all details for profile:-
+ 
+ NetcoreSDK.profile(this,newProfile);
+ 
+Note: ewprofile is JSONObject with all details of User
+Ex. 
+JSONObject newProfile = new JSONObject();
+try {
+  newProfile.put( "Name", "Developer" );
+  newProfile.put( "Age", 25 );
+  newProfile.put( "Mobile", "1234567890" );
+  newProfile.put( "EmailId", "abc@example.cmo" );
+  newProfile.put( "Country", "India" );
+  newProfile.put( "Education", "B.E." );
+  newProfile.put( "City", "Mumbai" );
+  newProfile.put( "Gender", "Male" );
+  newProfile.put( "DOB", "12/12/2012" );
+  newProfile.put( "Married", "single" );
+ 
+  NetcoreSDK.profile(this,newProfile);
+}
+catch ( JSONException e ) {
+  e.printStackTrace();
+}
+
+```
+
+### Go to tools->android and click on sync project with gradle files
+
+### Run the application
 
 ### To support deeplink in application
 Add these peice of code in AndroidManifest.xml file in each activity in which you want Deep-Link.
