@@ -162,20 +162,20 @@ ActivityLifeCycleCallBack.register(getApplication());
  
  NetcoreSDK.profile(this,newProfile);
  
-Note: ewprofile is JSONObject with all details of User
-Ex. 
+Note: newProfile is JSONObject with all details of User
+E.g. 
 JSONObject newProfile = new JSONObject();
 try {
-  newProfile.put( "Name", "Developer" );
-  newProfile.put( "Age", 25 );
-  newProfile.put( "Mobile", "1234567890" );
-  newProfile.put( "EmailId", "abc@example.cmo" );
-  newProfile.put( "Country", "India" );
-  newProfile.put( "Education", "B.E." );
-  newProfile.put( "City", "Mumbai" );
-  newProfile.put( "Gender", "Male" );
+  newProfile.put( "NAME", "Developer" );
+  newProfile.put( "AGE", 25 );
+  newProfile.put( "MOBILE", "1234567890" );
+  newProfile.put( "EMAIL", "abc@example.cmo" );
+  newProfile.put( "COUNTRY", "India" );
+  newProfile.put( "EDUCATION", "B.E." );
+  newProfile.put( "CITY", "Mumbai" );
+  newProfile.put( "GENDER", "Male" );
   newProfile.put( "DOB", "12/12/2012" );
-  newProfile.put( "Married", "single" );
+  newProfile.put( "MARRIED", "single" );
  
   NetcoreSDK.profile(this,newProfile);
 }
